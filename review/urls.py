@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 
 
 router = DefaultRouter()
-router.register('rating', RatingViewSet)
+router.register('ratings', RatingViewSet)
 router.register('comments', CommentViewSet)
 
 urlpatterns = [

@@ -2,8 +2,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import RegisterSerializer
 from .models import User
+from drf_yasg.utils import swagger_auto_schema
+
+
 
 class RegisterView(APIView):
+    @swagger_auto_schema(request_body=RegisterSerializer())
     def post(self, request):
         data = request.data
         serializer = RegisterSerializer(data=data)
@@ -20,3 +24,5 @@ class ActivationView(APIView):
         user.is_active = True
         user.save()
         return Response('Activated', 200)
+
+
