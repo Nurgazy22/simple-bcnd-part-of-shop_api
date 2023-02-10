@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework_simplejwt',
     'django_filters',
+    'corsheaders',
     #apps
     'review',
     'product',
@@ -31,9 +32,14 @@ INSTALLED_APPS = [
     'account',
 ]
 
+CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:8000', 'https://domain.com']
+
+CORS_ALLOWED_METHODS = ['GET', 'POST', 'PATCH', 'PUT', 'OPTIONS']
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -107,8 +113,8 @@ REST_FRAMEWORK = {
     ),
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
@@ -134,3 +140,10 @@ SWAGGER_SETTINGS = {
 
 CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
+
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static'
+
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'

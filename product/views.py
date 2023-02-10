@@ -9,12 +9,14 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.permissions import IsAdminUser, AllowAny
+from order.serializers import FavoriteSerializer
+from order.models import Favorite
 
 class PermissionMixin():
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
-            permissions = [IsAdminUser, ]
+            permissions = [IsAdminUser]
         else:
             permissions = [AllowAny]
         return [permission() for permission in permissions]
@@ -48,3 +50,19 @@ class ProductViewSet(PermissionMixin, ModelViewSet):
                 message = 'liked'
             return Response(message, status=200)
 
+
+    @action(methods=['POST'], detail=True)
+    def favorite(self, request, pk=None):
+        product = self.get_object()
+        author = request.user
+        serializer = FavoriteSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            try:
+                favorite = Favorite.objects.get(product=product, author=author)
+                favorite.delete()
+                message = 'deleted from favorites'
+            except Favorite.DoesNotExist:
+                Favorite.objects.create(product=product, author=author, is_favorite=True)
+                message = 'added to favorites'
+            return Response(message, status=200)
+        

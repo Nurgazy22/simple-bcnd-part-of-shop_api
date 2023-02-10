@@ -41,7 +41,7 @@ class Favorite(models.Model):
     is_favorite = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return f'{self.favorite} favorite by {self.author.name}'
+        return f'{self.product} favorite by {self.author.email}'
     
 
 

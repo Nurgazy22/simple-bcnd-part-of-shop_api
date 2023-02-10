@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Order, OrderItem
+from .models import Order, OrderItem, Favorite
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -30,6 +30,19 @@ class OrderSerializer(serializers.ModelSerializer):
         order.total_sum = total_sum
         order.save()
         return order
+    
+
+class FavoriteSerializer(serializers.ModelSerializer):
+
+    author = serializers.ReadOnlyField(source='author.email')
+    product = serializers.ReadOnlyField()
+
+    class Meta:
+        model = Favorite
+        fields = '__all__'
+    
+
+
 
 
 
